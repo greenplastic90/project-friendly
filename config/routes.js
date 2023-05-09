@@ -2,7 +2,8 @@ import express from 'express'
 import { registerUser, loginUser } from '../controllers/auth.js'
 import { deleteUser, getUserProfile, updateProfile } from '../controllers/users.js'
 import { secureRoute } from './secureRoute.js'
-import { addUserIcon } from '../controllers/userIcon.js'
+import { addUserIcon, getAllUserIcons } from '../controllers/userIcon.js'
+import { secureAdminRoute } from './secureAdminRoute.js'
 
 const router = express.Router()
 
@@ -19,6 +20,6 @@ router
 
 //? UserIcons
 //! only admins can create
-router.route('/user-icons').post(addUserIcon)
+router.route('/user-icons').post(secureAdminRoute, addUserIcon).get(getAllUserIcons)
 
 export default router
