@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 const { Schema } = mongoose
 //? userIcon
 const userIconSchema = new Schema({
-	icon: { type: String, reqired: true },
+	icon: { type: String, required: true },
 })
 //? user
 const userSchema = new Schema({
@@ -54,6 +54,7 @@ userSchema.methods.validatePassword = function (password) {
 
 // Plugin
 userSchema.plugin(uniqueValidator)
+
 const User = mongoose.model('User', userSchema)
 const UserIcon = mongoose.model('UserIcon', userIconSchema)
 

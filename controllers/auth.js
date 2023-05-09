@@ -6,7 +6,7 @@ export const registerUser = async (req, res) => {
 	try {
 		// console.log(req.body)
 		const newUser = await User.create(req.body)
-		console.log(newUser)
+		// console.log(newUser)
 		// accepted 202
 		return res.status(202).json(newUser)
 	} catch (err) {
