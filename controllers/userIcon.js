@@ -26,10 +26,8 @@ export const deleteUserIcons = async (req, res) => {
 			return res.status(400).json({ message: 'Please provide ids as a query parameter.' })
 		}
 
-		// Split the comma-separated list of ids and create an array.
 		const idArray = ids.split(',')
 
-		// Using deleteMany with $in operator to delete all matching documents.
 		const result = await UserIcon.deleteMany({ _id: { $in: idArray } })
 
 		if (result.n === 0) {
@@ -38,6 +36,9 @@ export const deleteUserIcons = async (req, res) => {
 
 		return res.status(200).json({ message: `${result.deletedCount} icon(s) successfully deleted.` })
 	} catch (err) {
+		if (err.message === 'INVALID_ID') {
+			return res.status(400).json({ message: 'One or more provided ids are not valid ObjectIds.' })
+		}
 		return res.status(422).json(err)
 	}
 }

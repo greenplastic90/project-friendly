@@ -19,7 +19,7 @@ const userSchema = new Schema({
 	password: { type: String, required: true, minlength: 8 },
 	email: { type: String, required: true, unique: true },
 	isAdmin: { type: Boolean, default: false },
-	icon: { type: userIconSchema, required: false },
+	icon: { type: mongoose.Schema.ObjectId, ref: 'UserIcon', required: false },
 })
 userSchema.set('toJSON', {
 	virtuals: true,
