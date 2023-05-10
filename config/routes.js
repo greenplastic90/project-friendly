@@ -4,7 +4,12 @@ import { deleteUser, getUserProfile, updateProfile } from '../controllers/user.j
 import { secureRoute } from './secureRoute.js'
 import { addUserIcon, deleteUserIcons, getAllUserIcons } from '../controllers/userIcon.js'
 import { secureAdminRoute } from './secureAdminRoute.js'
-import { createParty, getPartyById, getUserParties } from '../controllers/party.js'
+import {
+	createParty,
+	deleteUserParties,
+	getPartyById,
+	getUserParties,
+} from '../controllers/party.js'
 
 const router = express.Router()
 
@@ -28,7 +33,11 @@ router
 	.delete(secureAdminRoute, deleteUserIcons)
 
 //? Parties
-router.route('/parties').post(secureRoute, createParty).get(secureRoute, getUserParties)
+router
+	.route('/parties')
+	.post(secureRoute, createParty)
+	.get(secureRoute, getUserParties)
+	.delete(secureRoute, deleteUserParties)
 router.route('/parties/:id').get(secureRoute, getPartyById)
 
 export default router

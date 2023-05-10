@@ -31,24 +31,46 @@ export const getPartyById = async (req, res) => {
 	}
 }
 
-export const updateParty = async (req, res) => {
-	try {
-		const party = await Party.findByIdAndUpdate(req.params.id, req.body, {
-			new: true,
-			runValidators: true,
-		}).populate('owner')
-		if (!party) return res.status(404).json({ message: 'Party not found' })
-		res.status(200).json(party)
-	} catch (error) {
-		res.status(400).json({ message: error.message })
-	}
-}
+// export const updateParty = async (req, res) => {
+// 	try {
+// 		const party = await Party.findByIdAndUpdate(req.params.id, req.body, {
+// 			new: true,
+// 			runValidators: true,
+// 		}).populate('owner')
+// 		if (!party) return res.status(404).json({ message: 'Party not found' })
+// 		res.status(200).json(party)
+// 	} catch (error) {
+// 		res.status(400).json({ message: error.message })
+// 	}
+// }
 
-export const deleteParty = async (req, res) => {
+export const deleteUserParties = async (req, res) => {
 	try {
-		const party = await Party.findByIdAndDelete(req.params.id)
-		if (!party) return res.status(404).json({ message: 'Party not found' })
-		res.status(204).json({ message: 'Party successfully deleted' })
+		const { ids } = req.query
+
+		if (!ids) {
+			return res.status(400).json({ message: 'Please provide ids as a query parameter.' })
+		}
+
+		const idArray = ids.split(',')
+
+		const partiesToDelete = await Party.find({ _id: { $in: idArray } })
+
+		await Promise.all(
+			partiesToDelete.map((party) => {
+				if (!party.owner.equals(req.currentUser._id)) throw new Error('Unauthorized')
+			})
+		)
+
+		const result = await Party.deleteMany({ _id: { $in: idArray } })
+
+		if (result.deletedCount === 0) {
+			return res.status(404).json({ message: 'No parties were found with the provided ids.' })
+		}
+
+		return res
+			.status(200)
+			.json({ message: `${result.deletedCount} party(ies) successfully deleted.` })
 	} catch (error) {
 		res.status(400).json({ message: error.message })
 	}
