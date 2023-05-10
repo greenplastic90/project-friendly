@@ -12,9 +12,9 @@ export const createParty = async (req, res) => {
 	}
 }
 
-export const getParties = async (_req, res) => {
+export const getUserParties = async (req, res) => {
 	try {
-		const parties = await Party.find().populate('owner')
+		const parties = await Party.find({ owner: req.currentUser._id })
 		res.status(200).json(parties)
 	} catch (error) {
 		res.status(400).json({ message: error.message })
