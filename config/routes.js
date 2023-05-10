@@ -1,6 +1,6 @@
 import express from 'express'
 import { registerUser, loginUser } from '../controllers/auth.js'
-import { deleteUser, getUserProfile, updateProfile } from '../controllers/users.js'
+import { deleteUser, getUserProfile, updateProfile } from '../controllers/user.js'
 import { secureRoute } from './secureRoute.js'
 import { addUserIcon, deleteUserIcons, getAllUserIcons } from '../controllers/userIcon.js'
 import { secureAdminRoute } from './secureAdminRoute.js'
@@ -25,5 +25,7 @@ router
 	.post(secureAdminRoute, addUserIcon)
 	.get(getAllUserIcons)
 	.delete(secureAdminRoute, deleteUserIcons)
+
+// router('/parties').post()
 
 export default router

@@ -5,7 +5,7 @@ export const addUserIcon = async (req, res) => {
 		const newUserIcon = await UserIcon.create({ ...req.body })
 		return res.status(201).json(newUserIcon)
 	} catch (err) {
-		return res.status(422).json(err)
+		return res.status(422).json({ message: err.message })
 	}
 }
 
@@ -14,7 +14,7 @@ export const getAllUserIcons = async (_req, res) => {
 		const userIcons = await UserIcon.find()
 		return res.status(200).json(userIcons)
 	} catch (err) {
-		return res.status(422).json(err)
+		return res.status(422).json({ message: err.message })
 	}
 }
 
@@ -39,6 +39,6 @@ export const deleteUserIcons = async (req, res) => {
 		if (err.message === 'INVALID_ID') {
 			return res.status(400).json({ message: 'One or more provided ids are not valid ObjectIds.' })
 		}
-		return res.status(422).json(err)
+		return res.status(422).json({ message: err.message })
 	}
 }
