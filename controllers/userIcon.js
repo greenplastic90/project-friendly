@@ -18,7 +18,7 @@ export const getAllUserIcons = async (_req, res) => {
 	}
 }
 
-export const deleteIcons = async (req, res) => {
+export const deleteUserIcons = async (req, res) => {
 	try {
 		const { ids } = req.query
 
