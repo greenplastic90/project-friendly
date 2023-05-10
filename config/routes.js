@@ -27,6 +27,7 @@ router
 	.get(getAllUserIcons)
 	.delete(secureAdminRoute, deleteUserIcons)
 
-router.route('/parties').post(createParty)
+//? Parties
+router.route('/parties').post(secureRoute, createParty)
 
 export default router

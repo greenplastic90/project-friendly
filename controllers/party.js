@@ -2,14 +2,17 @@ import Party from '../models/party.js'
 
 export const createParty = async (req, res) => {
 	try {
-		const newParty = await Party.create(req.body)
+		const newParty = await Party.create({
+			...req.body,
+			owner: req.currentUser._id,
+		})
 		res.status(201).json(newParty)
-	} catch (error) {
-		res.status(400).json({ message: error.message })
+	} catch (err) {
+		res.status(400).json({ errors: err.errors })
 	}
 }
 
-export const getParties = async (req, res) => {
+export const getParties = async (_req, res) => {
 	try {
 		const parties = await Party.find().populate('owner')
 		res.status(200).json(parties)
